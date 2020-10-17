@@ -26,6 +26,10 @@ SASSPlugin.prototype.toTree = function(tree, inputPath, outputPath, inputOptions
     inputTrees = [tree];
   }
 
+  if (options.passthrough) {
+    inputTrees = [new Funnel(tree, options.passthrough)];
+  }
+  
   if (options.includePaths) {
     inputTrees = inputTrees.concat(options.includePaths);
   }
@@ -54,10 +58,6 @@ SASSPlugin.prototype.toTree = function(tree, inputPath, outputPath, inputOptions
     var output = paths[file];
     return new SassCompiler(inputTrees, input, output, options);
   });
-
-  if (options.passthrough) {
-    trees.push(new Funnel(tree, options.passthrough));
-  }
 
   return mergeTrees(trees);
 };
